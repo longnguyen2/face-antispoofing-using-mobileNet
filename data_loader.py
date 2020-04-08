@@ -101,8 +101,8 @@ class DataLoader:
 def get_files():
     all_image_list = []
     all_label_list = []
-    real_dir = '/src/MobileNet/data/ClientFace'
-    fake_dir = '/src/MobileNet/data/ImposterFace'
+    real_dir = './data/ClientFace'
+    fake_dir = './data/ImposterFace'
     # load the real image
     count_real = 0
     count_fake = 0

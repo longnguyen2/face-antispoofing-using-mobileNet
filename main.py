@@ -4,7 +4,8 @@ from train import Train
 from data_loader import DataLoader
 from summarizer import Summarizer
 import tensorflow as tf
-
+from crop_face import FaceCropper
+import cv2
 
 def main():
     # Parse the JSON arguments
@@ -42,19 +43,49 @@ def main():
     # Train class
     trainer = Train(sess, model, data, summarizer)
 
-    if config_args.to_train:
-        try:
-            print("Training...")
-            trainer.train()
-            print("Training Finished\n\n")
-        except KeyboardInterrupt:
-            trainer.save_model()
+    # if config_args.to_train:
+    #     try:
+    #         print("Training...")
+    #         trainer.train()
+    #         print("Training Finished\n\n")
+    #     except KeyboardInterrupt:
+    #         trainer.save_model()
 
-    if config_args.to_test:
-        print("Final test!")
-        trainer.test('val')
-        print("Testing Finished\n\n")
-
+    # if config_args.to_test:
+    #     print("Final test!")
+    #     trainer.test('val')
+    #     print("Testing Finished\n\n")
+    # trainer.dectect(FaceCropper().generate('fake.png'))
 
 if __name__ == '__main__':
-    main()
+    # main()
+    # config_args = parse_args()
+    # config_args.img_height, config_args.img_width, config_args.num_channels = (224, 224, 3)
+    # _, config_args.summary_dir, config_args.checkpoint_dir = create_experiment_dirs(config_args.experiment_dir)
+    # config = tf.ConfigProto(allow_soft_placement=True)
+    # config.gpu_options.allow_growth = True
+    # faces = FaceCropper().generate('maxresdefault.jpg')
+    # with tf.Session(config=config) as sess:
+    #     config_args.batch_size = len(faces)
+    #     model = MobileNet(config_args)
+    #     sess.run(tf.group(tf.global_variables_initializer(), tf.local_variables_initializer()))
+    #     saver = tf.train.Saver(max_to_keep=config_args.max_to_keep,
+    #                                 keep_checkpoint_every_n_hours=10,
+    #                                 save_relative_paths=True)
+    #     saver.restore(sess, tf.train.latest_checkpoint(config_args.checkpoint_dir))
+    #     sess.run(model.y_out_argmax, feed_dict={model.X: faces, model.is_training: False})
+
+        # show camera
+        face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+        cap = cv2.VideoCapture(0)
+        while True:
+            _, img = cap.read()
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+            for (x, y, w, h) in faces:
+                cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
+            cv2.imshow('img', img)
+            k = cv2.waitKey(30) & 0xff
+            if k==27:
+                break
+        cap.release()
