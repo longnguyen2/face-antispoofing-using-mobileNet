@@ -103,8 +103,8 @@ if __name__ == '__main__':
                     cv2.rectangle(img, (x, y), (x+w, y+h), (255, 255, 0), 2)
                     cv2.putText(img, 'Fake', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 0), 2)
                 if (results[i] == 1):
-                    cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
-                    cv2.putText(img, 'Fake', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 2)
+                    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+                    cv2.putText(img, 'Real', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 2)
                 i += 1
             cv2.imshow('img', img)
             k = cv2.waitKey(30) & 0xff
