@@ -6,6 +6,7 @@ from summarizer import Summarizer
 import tensorflow as tf
 from crop_face import FaceCropper
 import cv2
+import numpy as np
 
 def main():
     # Parse the JSON arguments
@@ -100,10 +101,11 @@ if __name__ == '__main__':
             for (x, y, w, h) in faces:
                 if (results[i] == 0):
                     cv2.rectangle(img, (x, y), (x+w, y+h), (255, 255, 0), 2)
-                    cv2.putText(img, 'Fake', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (255, 255, 0), 2)
+                    cv2.putText(img, 'Fake', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 0), 2)
                 if (results[i] == 1):
                     cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
-                    cv2.putText(img, 'Fake', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (255, 0, 0), 2)
+                    cv2.putText(img, 'Fake', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 0), 2)
+                i += 1
             cv2.imshow('img', img)
             k = cv2.waitKey(30) & 0xff
             if k==27:
